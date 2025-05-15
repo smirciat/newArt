@@ -1,0 +1,41 @@
+<div style="padding-left:20px;padding-right:20px;">
+  <h1>Draft of T100/Data Reporting System</h1>
+  <span style="display:inline-block">
+    <strong>Choose Date</strong>
+    <div style="padding-left:0px;padding-top:0px;display:inline-block" class="input-group">
+      <input style="height:40px;width:150px;" type="text" ng-model="main.dateStringFormatted" ng-blur="main.upDate('string')">
+      <span class="input-group-btn">
+        <button type="button" class="btn btn-default" ng-click="main.isDatepickerOpen = !main.isDatepickerOpen">
+          <i class="glyphicon glyphicon-calendar"></i>
+        </button>
+      </span>
+      <input style="display:none" type="text" class="form-control" uib-datepicker-popup="EEEE MMM d, yyyy" ng-model="main.date" ng-change="main.upDate()" 
+         is-open="main.isDatepickerOpen" datepicker-options="main.datepickerOptions" ng-required="true" close-text="Close" 
+         alt-input-formats="altInputFormats"/>
+    </div>
+  </span>
+  <div>
+    <table class="table table-responsive table-striped">
+      <thead>
+        <th>Date</th>
+        <th>PFR#</th>
+        <th>Pilot</th>
+        <th>Flight#</th>
+        <th>Aircraft</th>
+        <th>Show Legs</th>
+        <th>Show TakeFlite Data</th>
+      </thead>
+      <tbody>
+        <tr ng-repeat="pfr in main.dailyPfrs track by $index">
+          <td>{{pfr.dateString}}</td>
+          <td>{{pfr._id}}</td>
+          <td>{{pfr.pilot}}</td>
+          <td>{{pfr.flightNumber}}</td>
+          <td>{{pfr.acftNumber}}</td>
+          <td><button type="button" class="btn btn-success" ng-click="main.showLegs(pfr)">Show Legs</button></td>
+          <td><button type="button" class="btn btn-warning" ng-click="main.takeFlite(pfr)">Show TFlite Data</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

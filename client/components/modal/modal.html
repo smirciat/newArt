@@ -1,0 +1,33 @@
+<div class="modal-header">
+  <button ng-if="modal.dismissable" type="button" ng-click="$dismiss()" class="close">&times;</button>
+  <h4 ng-if="modal.title" ng-bind="modal.title" class="modal-title"></h4>
+</div>
+<div class="modal-body">
+  <p ng-if="modal.text" ng-bind="modal.text"></p>
+  <div ng-if="modal.html" ng-bind-html="modal.html"></div>
+  
+  <div ng-if="modal.tflite">
+    <div ng-repeat="leg in modal.flight.flightLegs track by $index">
+      <span>Origin - {{leg.origin.code}}, Dest - {{leg.destination.code}}, Pax# - {{leg.passengers.length}},&nbsp</span>
+      <span><button class="btn btn-success" ng-click="modal.show($index)">Show/Hide Pax</button></span>
+      <div ng-show="modal.isVisible[$index]">
+        <strong ng-repeat="pax in leg.passengers">{{pax.name.firstName||''+ ' ' + pax.name.lastName}},&nbsp</strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div ng-if="modal.showLegs">
+    <div ng-repeat="leg in modal.flight.legArray track by $index">
+      <span>Origin - {{leg.dep}}, Dest - {{leg.arr}}, Pax# - {{leg.paxNoLoad}},&nbsp</span>
+      <!--<span><button class="btn btn-success" ng-click="modal.show($index)">Show/Hide Pax</button></span>
+      <div ng-show="modal.isVisible[$index]">
+        <strong ng-repeat="pax in leg.passengers">{{pax.name.firstName||''+ ' ' + pax.name.lastName}},&nbsp</strong>
+      </div>
+    </div>-->
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button ng-repeat="button in modal.buttons" ng-class="button.classes" ng-click="button.click($event)" ng-bind="button.text" class="btn"></button>
+</div>
