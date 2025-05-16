@@ -299,7 +299,7 @@ async function getTFFlight(body){
     return response.data;
   }
   catch(err){
-    console.log(err.response.data);
+    console.log(err.response.data||err.response||err);
     await setBearer();
     if (err.response&&err.response.data&&err.response.data.statusCode===401) {
       try{ 
@@ -319,6 +319,69 @@ export async function tfFlight(req,res){
   try{
     let array=await getTFFlight(req.body||{});
     res.status(200).json(array);
+  }
+  catch(err){
+    res.status(500).json(err);
+  }
+}
+
+async function getTFFlights(body){
+  let timestamp='2025-04-10T00:00:00';
+  let timestamp2='2025-04-11T00:00:00';
+  if (body.date){
+    timestamp=new Date(body.date);
+    timestamp.setHours(0, 0, 0, 0);
+    let date=new Date(timestamp);
+    timestamp=timestamp.toISOString();
+    timestamp2=date.setDate(date.getDate() + 1);
+    timestamp2=new Date(timestamp2);
+    timestamp2.setHours(0, 0, 0, 0);
+    timestamp2=timestamp2.toISOString();
+  }
+  let config2 = {
+    method: 'get',
+    url: 'https://api.tflite.com/manifests?departureDate.gte='+timestamp+'&departureDate.lte='+timestamp2,
+    headers: { 
+      'Accept': 'application/json', 
+      'api-version': 'v1', 
+      'Authorization': 'Bearer '+Bearer
+    }
+  };
+  try {
+    let response=await axios(config2);
+    return response.data;
+  }
+  catch(err){
+    console.log(err.response.data||err.response||err);
+    await setBearer();
+    if (err.response&&err.response.data&&err.response.data.statusCode===401) {
+      try{ 
+        let res=await getTFFlights(body);
+        if (res) return res;
+      }
+      catch(err){
+        console.log(err);
+        return err.response||err;
+      }
+    }
+    return err.response||err;
+  }
+}
+
+export async function tfFlights(req,res){
+  try{
+    let array=await getTFFlights(req.body||{});
+    res.status(200).json(array);
+  }
+  catch(err){
+    res.status(500).json(err);
+  }
+}
+
+export async function collection(req,res){
+  try{
+    let array=await getCollection(req.body.collection||'aircraft');
+    res.status(200).json(collectionToArray(array));
   }
   catch(err){
     res.status(500).json(err);

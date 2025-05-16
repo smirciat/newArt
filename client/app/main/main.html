@@ -1,4 +1,4 @@
-<div style="padding-left:20px;padding-right:20px;">
+<div style="padding-left:20px;padding-right:20px;" ng-if="main.Auth.isAdmin()">
   <h1>Draft of T100/Data Reporting System</h1>
   <span style="display:inline-block">
     <strong>Choose Date</strong>
@@ -14,6 +14,9 @@
          alt-input-formats="altInputFormats"/>
     </div>
   </span>
+  <button class="btn btn-primary" disabled ng-show="main.processing">Processing {{main.dString}}</button>
+  <button class="btn btn-primary" ng-click="main.t100()" ng-hide="main.processing">Create T100 Files for Month Shown</button>
+  <a class="btn btn-primary" download="{{main.filename}}" ng-href="{{ main.url }}" ng-if="main.complete">Download CSV File</a>
   <div>
     <table class="table table-responsive table-striped">
       <thead>
@@ -22,7 +25,7 @@
         <th>Pilot</th>
         <th>Flight#</th>
         <th>Aircraft</th>
-        <th>Show Legs</th>
+        <th>Show PFR Legs</th>
         <th>Show TakeFlite Data</th>
       </thead>
       <tbody>
@@ -32,7 +35,7 @@
           <td>{{pfr.pilot}}</td>
           <td>{{pfr.flightNumber}}</td>
           <td>{{pfr.acftNumber}}</td>
-          <td><button type="button" class="btn btn-success" ng-click="main.showLegs(pfr)">Show Legs</button></td>
+          <td><button type="button" class="btn btn-success" ng-click="main.showLegs(pfr)">Show PFR Legs</button></td>
           <td><button type="button" class="btn btn-warning" ng-click="main.takeFlite(pfr)">Show TFlite Data</button></td>
         </tr>
       </tbody>
